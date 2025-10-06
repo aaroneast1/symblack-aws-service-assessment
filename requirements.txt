@@ -1,0 +1,6 @@
+# No external Python packages required
+# This project uses only Python standard library
+
+# System-level dependencies (install separately):
+# - AWS CLI v2 (https://aws.amazon.com/cli/)
+# - Terraform 1.0+ (https://www.terraform.io/downloads)
