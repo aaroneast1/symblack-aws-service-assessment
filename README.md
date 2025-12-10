@@ -10,7 +10,6 @@ This tool analyzes your AWS account to:
 3. Generate ready-to-deploy Terraform configurations
 4. Create either an IAM policy attachment OR an assumable IAM role
 
-Perfect for security assessments, compliance audits, and implementing least-privilege access.
 
 ## Prerequisites
 
