@@ -276,6 +276,18 @@ def generate_iam_policy(services: list, account_id: str, region: str, profile: s
             "Resource": "*"
         })
 
+    # Add Cost Explorer permissions (required to enumerate services)
+    statements.append({
+        "Sid": "CostExplorerReadOnly",
+        "Effect": "Allow",
+        "Action": [
+            "ce:Describe*",
+            "ce:Get*",
+            "ce:List*"
+        ],
+        "Resource": "*"
+    })
+
     # Add core security assessment permissions (always included)
     statements.append({
         "Sid": "SecurityAssessmentCore",
