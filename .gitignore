@@ -210,3 +210,9 @@ CLAUDE.md
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Terraform
+s3/.terraform.lock.hcl
+s3/.terraform
+s3/terraform.tfstate
+s3/terraform.tfstate.backup

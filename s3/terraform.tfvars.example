@@ -1,0 +1,24 @@
+# Example Terraform variables for S3 bucket and IAM user
+# Copy this file to terraform.tfvars and update the values
+
+# AWS Region
+aws_region = "eu-west-2"
+
+# Organisation name - used to construct bucket name: {org_name}.s3.symmetryblack.com
+# Must be lowercase alphanumeric and hyphens only
+org_name = "acme-corp"
+
+# IAM user name (default: symblacks3)
+iam_user_name = "symblacks3"
+
+# Enable versioning (recommended for data protection)
+enable_versioning = true
+
+# Enable server-side encryption (recommended)
+enable_encryption = true
+
+# Additional tags (optional)
+tags = {
+  Environment = "production"
+  Project     = "symmetryblack"
+}
