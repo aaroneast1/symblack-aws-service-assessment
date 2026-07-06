@@ -265,14 +265,27 @@ def generate_iam_policy(services: list, account_id: str, region: str, profile: s
         # Generate unique SID from IAM prefix
         sid = f"{iam_prefix.replace('-', '').replace('_', '').title()}ReadOnly"
 
+        if iam_prefix == "secretsmanager":
+            # secretsmanager:Get* would include GetSecretValue / BatchGetSecretValue,
+            # which return the secret contents. An assessment role must never read
+            # those — enumerate only the safe read-only actions instead.
+            actions = [
+                "secretsmanager:Describe*",
+                "secretsmanager:List*",
+                "secretsmanager:GetResourcePolicy",
+                "secretsmanager:GetRandomPassword",
+            ]
+        else:
+            actions = [
+                f"{iam_prefix}:Describe*",
+                f"{iam_prefix}:Get*",
+                f"{iam_prefix}:List*",
+            ]
+
         statements.append({
             "Sid": sid,
             "Effect": "Allow",
-            "Action": [
-                f"{iam_prefix}:Describe*",
-                f"{iam_prefix}:Get*",
-                f"{iam_prefix}:List*"
-            ],
+            "Action": actions,
             "Resource": "*"
         })
 
