@@ -4,12 +4,12 @@
 # AWS Region
 aws_region = "eu-west-2"
 
-# Organisation name - used to construct bucket name: {org_name}.s3.symmetryblack.com
+# Organisation name - used to construct bucket name: {org_name}.storage.symmetryblack.com
 # Must be lowercase alphanumeric and hyphens only
 org_name = "acme-corp"
 
-# IAM user name (default: symblacks3)
-iam_user_name = "symblacks3"
+# IAM user name (default: symblack-storage)
+iam_user_name = "symblack-storage"
 
 # Enable versioning (recommended for data protection)
 enable_versioning = true

@@ -1,4 +1,4 @@
-# Input variables for S3 bucket and IAM user module
+# Input variables for the storage S3 bucket and IAM user module.
 
 variable "aws_region" {
   description = "AWS region for the S3 bucket"
@@ -7,7 +7,7 @@ variable "aws_region" {
 }
 
 variable "org_name" {
-  description = "Organisation name used to construct the bucket name: {org_name}.s3.symmetryblack.com"
+  description = "Organisation name used to construct the bucket name: {org_name}.storage.symmetryblack.com"
   type        = string
 
   validation {
@@ -17,9 +17,9 @@ variable "org_name" {
 }
 
 variable "iam_user_name" {
-  description = "Name of the IAM user to create"
+  description = "Name of the IAM user for storage bucket access"
   type        = string
-  default     = "symblacks3"
+  default     = "symblack-storage"
 }
 
 variable "enable_versioning" {

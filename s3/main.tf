@@ -1,5 +1,4 @@
-# Terraform configuration for S3 bucket and IAM user
-# This module creates an S3 bucket and IAM user with read/write/delete permissions
+# Terraform configuration for the storage S3 bucket and its scoped IAM user.
 
 terraform {
   required_version = ">= 1.0.0"
@@ -23,3 +22,5 @@ provider "aws" {
     }
   }
 }
+
+data "aws_caller_identity" "current" {}

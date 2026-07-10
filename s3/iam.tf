@@ -1,29 +1,25 @@
-# IAM User and Policy for S3 bucket access
+# IAM user for read/write access to the storage bucket.
+# Explicitly denied from creating any new bucket or deleting any bucket.
 
-# Get current AWS account ID
-data "aws_caller_identity" "current" {}
-
-# IAM User
-resource "aws_iam_user" "s3_user" {
+resource "aws_iam_user" "storage_user" {
   name = var.iam_user_name
   path = "/"
 
   tags = merge(var.tags, {
-    Description = "IAM user for S3 bucket access"
+    Description = "IAM user for storage bucket read/write access"
   })
 }
 
-# IAM Policy for S3 read/write/delete access
-resource "aws_iam_policy" "s3_access" {
+resource "aws_iam_policy" "storage_access" {
   name        = "${var.iam_user_name}-s3-access"
-  description = "Policy granting read/write/delete access to ${local.bucket_name}"
+  description = "Read/write on ${local.bucket_name} objects; explicit deny on bucket create/delete."
   path        = "/"
 
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
-        Sid    = "ListBucket"
+        Sid    = "ListStorageBucket"
         Effect = "Allow"
         Action = [
           "s3:ListBucket",
@@ -32,16 +28,23 @@ resource "aws_iam_policy" "s3_access" {
         Resource = "arn:aws:s3:::${local.bucket_name}"
       },
       {
-        Sid    = "ObjectReadWriteDelete"
+        Sid    = "ObjectReadWrite"
         Effect = "Allow"
         Action = [
           "s3:GetObject",
-          "s3:PutObject",
-          "s3:DeleteObject",
           "s3:GetObjectVersion",
-          "s3:DeleteObjectVersion"
+          "s3:PutObject"
         ]
         Resource = "arn:aws:s3:::${local.bucket_name}/*"
+      },
+      {
+        Sid      = "DenyBucketLifecycle"
+        Effect   = "Deny"
+        Action   = [
+          "s3:CreateBucket",
+          "s3:DeleteBucket"
+        ]
+        Resource = "*"
       }
     ]
   })
@@ -49,15 +52,13 @@ resource "aws_iam_policy" "s3_access" {
   tags = var.tags
 }
 
-# Attach policy to user
-resource "aws_iam_user_policy_attachment" "s3_access" {
-  user       = aws_iam_user.s3_user.name
-  policy_arn = aws_iam_policy.s3_access.arn
+resource "aws_iam_user_policy_attachment" "storage_access" {
+  user       = aws_iam_user.storage_user.name
+  policy_arn = aws_iam_policy.storage_access.arn
 }
 
-# Access key for programmatic access
-resource "aws_iam_access_key" "s3_user" {
-  user = aws_iam_user.s3_user.name
+resource "aws_iam_access_key" "storage_user" {
+  user = aws_iam_user.storage_user.name
 
   lifecycle {
     create_before_destroy = true
